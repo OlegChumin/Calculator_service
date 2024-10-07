@@ -33,9 +33,9 @@ public class TracingFilterConfig {
 
 
     @Bean
-    public FilterRegistrationBean<TracingFilter> tracingFilterRegistration() {
-        FilterRegistrationBean<TracingFilter> registration = new FilterRegistrationBean<TracingFilter>();
-        registration.setFilter(new TracingFilter(tracer));
+    public FilterRegistrationBean<Filter> tracingFilterRegistration() {
+        FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new JakartaFilterAdapter(new TracingFilter(tracer)));
         registration.addUrlPatterns("/*");  // Применение фильтра ко всем URL
         registration.setOrder(1);  // Можно указать приоритет выполнения
         return registration;
