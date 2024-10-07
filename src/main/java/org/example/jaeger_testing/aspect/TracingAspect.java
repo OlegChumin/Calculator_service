@@ -1,5 +1,6 @@
 package org.example.jaeger_testing.aspect;
 
+import io.opentracing.Scope;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
 import lombok.extern.slf4j.Slf4j;
@@ -33,18 +34,24 @@ public class TracingAspect {
         Span span = tracer.buildSpan(methodName).start();
         log.info("Started tracing method: {}", methodName);
 
-        Object result;
-        try {
-            // Выполнение метода
-            result = pjp.proceed();
+        // Активируем новый спан в Scope
+        try (Scope scope = tracer.scopeManager().activate(span)) {
+            // Убедимся, что спан активен
+            Span currentSpan = tracer.activeSpan();
+            if (currentSpan != null) {
+                log.info("Active span during method execution: {}", currentSpan.context().toTraceId());
+            }
+
+            // Выполняем целевой метод
+            return pjp.proceed();
         } catch (Throwable throwable) {
+            // В случае ошибки помечаем спан как ошибочный
             span.setTag("error", true);
             throw throwable;
         } finally {
+            // Закрываем спан
             span.finish();
             log.info("Finished tracing method: {}", methodName);
         }
-
-        return result;
     }
 }
