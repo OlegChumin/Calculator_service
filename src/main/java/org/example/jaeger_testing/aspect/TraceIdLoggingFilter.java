@@ -17,8 +17,12 @@ import java.io.IOException;
 @Component
 public class TraceIdLoggingFilter extends OncePerRequestFilter {
 
-    @Autowired
+
     private Tracer tracer;
+
+    public TraceIdLoggingFilter(Tracer tracer) {
+        this.tracer = tracer;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
