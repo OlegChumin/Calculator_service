@@ -21,6 +21,14 @@ public class TracingAspect {
     public Object traceMethod(ProceedingJoinPoint pjp) throws Throwable {
         String methodName = pjp.getSignature().getName();
 
+        // Проверяем наличие активного спана перед созданием нового
+        Span activeSpan = tracer.activeSpan();
+        if (activeSpan != null) {
+            log.info("Active span found before creating a new one: {}", activeSpan.context().toTraceId());
+        } else {
+            log.warn("No active span found before creating a new one!");
+        }
+
         // Создаем новый спан
         Span span = tracer.buildSpan(methodName).start();
         log.info("Started tracing method: {}", methodName);

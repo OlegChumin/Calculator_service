@@ -2,6 +2,7 @@ package org.example.jaeger_testing.rest;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.jaeger_testing.dto.OperationRequest;
@@ -9,6 +10,9 @@ import org.example.jaeger_testing.service.CalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -52,22 +56,32 @@ public class CalculatorController {
 
 
 
+//    @PostMapping("/sum")
+//    public ResponseEntity<Double> sum(@RequestBody OperationRequest request) {
+//        // Начинаем новый спан для метода "sum"
+//        Span span = tracer.buildSpan("sum-method").start();
+//
+//        // Выполняем основную логику
+//        double result = calculatorService.sum(request.getA(), request.getB());
+//
+//        // Добавляем тег с результатом
+//        span.setTag("result", result);
+//
+//        // Завершаем спан
+//        span.finish();
+//
+//        return ResponseEntity.ok(result);
+//    }
+
     @PostMapping("/sum")
-    public ResponseEntity<Double> sum(@RequestBody OperationRequest request) {
-        // Начинаем новый спан для метода "sum"
-        Span span = tracer.buildSpan("sum-method").start();
+    public ResponseEntity<Double> sum(@RequestBody OperationRequest request, HttpServletRequest httpServletRequest) {
+        log.info("Incoming request headers: {}", Collections.list(httpServletRequest.getHeaderNames()).stream()
+                .collect(Collectors.toMap(h -> h, httpServletRequest::getHeader)));
 
-        // Выполняем основную логику
         double result = calculatorService.sum(request.getA(), request.getB());
-
-        // Добавляем тег с результатом
-        span.setTag("result", result);
-
-        // Завершаем спан
-        span.finish();
-
         return ResponseEntity.ok(result);
     }
+
 
     @PostMapping("/subtract")
     public ResponseEntity<Double> subtract(@RequestBody OperationRequest request) {
