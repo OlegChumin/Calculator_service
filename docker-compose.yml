@@ -1,0 +1,44 @@
+version: '3'
+services:
+  jaeger-agent:
+    image: jaegertracing/jaeger-agent:1.61
+    ports:
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5775:5775/udp"
+      - "5778:5778"
+    command: [
+      "--reporter.grpc.host-port=jaeger-collector:14250",
+      "--collector.host-port=jaeger-collector:14267"
+    ]
+    networks:
+      - jaeger-network
+
+  jaeger-collector:
+    image: jaegertracing/jaeger-collector:1.61
+    ports:
+      - "14267:14267"
+      - "14268:14268"
+    networks:
+      - jaeger-network
+    environment:
+      - SPAN_STORAGE_TYPE=memory
+
+  jaeger-query:
+    image: jaegertracing/jaeger-query:1.61
+    ports:
+      - "16686:16686"
+    networks:
+      - jaeger-network
+    environment:
+      - QUERY_BASE_PATH=/
+      - SPAN_STORAGE_TYPE=memory
+
+networks:
+  jaeger-network:
+    driver: bridge
+
+#  docker pull jaegertracing/jaeger-agent:1.61.0
+#  docker pull jaegertracing/jaeger-collector:1.61.0
+#  docker pull jaegertracing/jaeger-query:1.61.0
+#  docker-compose up -d
