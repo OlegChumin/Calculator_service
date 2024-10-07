@@ -1,17 +1,3 @@
-spring:
-  application:
-    admin:
-      enabled: false
-  jmx:
-    enabled: false
-
-server:
-  shutdown: graceful
-  spring:
-    lifecycle:
-      timeout-per-shutdown-phase: 30s  # Максимальное время ожидания для завершения всех процессов
-
-
 opentracing:
   jaeger:
     enable: true
