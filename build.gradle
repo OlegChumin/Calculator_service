@@ -38,11 +38,17 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     //Jaeger
-    // https://mvnrepository.com/artifact/io.opentracing.contrib/opentracing-spring-jaeger-cloud-starter
-    implementation group: 'io.opentracing.contrib', name: 'opentracing-spring-jaeger-cloud-starter', version: '3.3.1'
-    // https://mvnrepository.com/artifact/io.opentracing.contrib/opentracing-spring-jaeger-starter
-    implementation group: 'io.opentracing.contrib', name: 'opentracing-spring-jaeger-starter', version: '3.3.1'
-
+    //стартер для интеграции Jaeger и OpenTracing? упрощает настройку Jaeger как бэкенда для трассировки в Spring Cloud приложений
+    implementation 'io.opentracing.contrib:opentracing-spring-jaeger-cloud-starter:3.3.1'
+    //стартер для интеграции Jaeger с OpenTracing для Spring Boot.
+    //содержит основные зависимости и настройки для интеграции Jaeger в контексте OpenTracing без Spring Cloud
+    implementation 'io.opentracing.contrib:opentracing-spring-jaeger-starter:3.3.1'
+    //Spring Cloud Sleuth — это библиотека для трассировки и ведения распределенных логов в Spring Cloud приложениях.
+    // Она добавляет поддержку Sleuth для трассировки запросов через различные сервисы, интегрируясь с OpenTracing и Jaeger
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.11'
+    //Основной API для OpenTracing, предоставляющий интерфейсы для создания и управления спанами (traces).
+    // Это низкоуровневая библиотека, которую используют все другие зависимости для работы с OpenTracing
+    implementation 'io.opentracing:opentracing-api:0.33.0'
 
 }
 
