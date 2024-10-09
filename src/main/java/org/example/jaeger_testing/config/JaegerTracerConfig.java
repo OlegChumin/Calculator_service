@@ -1,8 +1,10 @@
 package org.example.jaeger_testing.config;
 
 import io.opentracing.Tracer;
+import io.opentracing.contrib.spring.web.client.TracingRestTemplateInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class JaegerTracerConfig {
@@ -13,5 +15,12 @@ public class JaegerTracerConfig {
                 .withSampler(io.jaegertracing.Configuration.SamplerConfiguration.fromEnv().withType("const").withParam(1))
                 .withReporter(io.jaegertracing.Configuration.ReporterConfiguration.fromEnv().withLogSpans(true))
                 .getTracer();
+    }
+
+    @Bean
+    public RestTemplate restTemplate(Tracer tracer) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getInterceptors().add(new TracingRestTemplateInterceptor(tracer));
+        return restTemplate;
     }
 }

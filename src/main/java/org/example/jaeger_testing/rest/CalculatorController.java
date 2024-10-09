@@ -3,11 +3,9 @@ package org.example.jaeger_testing.rest;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.jaeger_testing.dto.OperationRequest;
+import org.example.jaeger_testing.dto.OperationRequestDTO;
 import org.example.jaeger_testing.service.CalculatorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,27 +52,8 @@ public class CalculatorController {
         return "Test span created and sent to Jaeger, Trace ID: " + traceId;
     }
 
-
-
-//    @PostMapping("/sum")
-//    public ResponseEntity<Double> sum(@RequestBody OperationRequest request) {
-//        // Начинаем новый спан для метода "sum"
-//        Span span = tracer.buildSpan("sum-method").start();
-//
-//        // Выполняем основную логику
-//        double result = calculatorService.sum(request.getA(), request.getB());
-//
-//        // Добавляем тег с результатом
-//        span.setTag("result", result);
-//
-//        // Завершаем спан
-//        span.finish();
-//
-//        return ResponseEntity.ok(result);
-//    }
-
     @PostMapping("/sum")
-    public ResponseEntity<Double> sum(@RequestBody OperationRequest request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Double> sum(@RequestBody OperationRequestDTO request, HttpServletRequest httpServletRequest) {
         log.info("Incoming request headers: {}", Collections.list(httpServletRequest.getHeaderNames()).stream()
                 .collect(Collectors.toMap(h -> h, httpServletRequest::getHeader)));
 
@@ -84,17 +63,17 @@ public class CalculatorController {
 
 
     @PostMapping("/subtract")
-    public ResponseEntity<Double> subtract(@RequestBody OperationRequest request) {
+    public ResponseEntity<Double> subtract(@RequestBody OperationRequestDTO request) {
         return ResponseEntity.ok(calculatorService.subtract(request.getA(), request.getB()));
     }
 
     @PostMapping("/multiply")
-    public ResponseEntity<Double> multiply(@RequestBody OperationRequest request) {
+    public ResponseEntity<Double> multiply(@RequestBody OperationRequestDTO request) {
         return ResponseEntity.ok(calculatorService.multiply(request.getA(), request.getB()));
     }
 
     @PostMapping("/divide")
-    public ResponseEntity<Double> divide(@RequestBody OperationRequest request) {
+    public ResponseEntity<Double> divide(@RequestBody OperationRequestDTO request) {
         return ResponseEntity.ok(calculatorService.divide(request.getA(), request.getB()));
     }
 }

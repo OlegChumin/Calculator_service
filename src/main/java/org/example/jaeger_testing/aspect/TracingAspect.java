@@ -18,7 +18,7 @@ public class TracingAspect {
     @Autowired
     private Tracer tracer;
 
-    @Around("@annotation(org.springframework.web.bind.annotation.RequestMapping) || @annotation(org.springframework.web.bind.annotation.PostMapping)")
+    @Around("@within(org.springframework.web.bind.annotation.RestController)")
     public Object traceMethod(ProceedingJoinPoint pjp) throws Throwable {
         String methodName = pjp.getSignature().getName();
 
