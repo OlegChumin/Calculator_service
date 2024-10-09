@@ -6,3 +6,5 @@ opentracing:
       host: localhost
       port: 6831
     log-spans: true
+
+feature-flag.ccc-jaeger.tracing.enabled: true

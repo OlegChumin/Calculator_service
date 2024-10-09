@@ -2,64 +2,33 @@ package org.example.jaeger_testing.rest;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.example.jaeger_testing.dto.OperationRequestDTO;
 import org.example.jaeger_testing.service.CalculatorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/calculator")
-//@RequiredArgsConstructor
 public class CalculatorController {
 
     private final CalculatorService calculatorService;
 
-    private Tracer tracer;
-
-    public CalculatorController(CalculatorService calculatorService, Tracer tracer) {
+    public CalculatorController(CalculatorService calculatorService) {
         this.calculatorService = calculatorService;
-        this.tracer = tracer;
-    }
-
-    // Тестовый метод для создания спана вручную
-    @GetMapping("/test-span")
-    public String createTestSpan() {
-        Span span = tracer.buildSpan("test-span").start();
-        span.setTag("example", "manual span");
-        span.finish();
-
-        return "Test span created and sent to Jaeger";
-    }
-
-    // Тестовый метод для создания спана вручную
-    @GetMapping("/test-span2")
-    public String createTestSpan2() {
-        Span span = tracer.buildSpan("test-span2").start();
-
-        // Получение traceId
-        String traceId = span.context().toTraceId();
-        log.info("Trace ID: {}", traceId);
-
-        span.setTag("example", "manual span");
-        span.finish();
-
-        return "Test span created and sent to Jaeger, Trace ID: " + traceId;
     }
 
     @PostMapping("/sum")
     public ResponseEntity<Double> sum(@RequestBody OperationRequestDTO request, HttpServletRequest httpServletRequest) {
-        log.info("Incoming request headers: {}", Collections.list(httpServletRequest.getHeaderNames()).stream()
-                .collect(Collectors.toMap(h -> h, httpServletRequest::getHeader)));
-
         double result = calculatorService.sum(request.getA(), request.getB());
         return ResponseEntity.ok(result);
     }
+
 
 
     @PostMapping("/subtract")
