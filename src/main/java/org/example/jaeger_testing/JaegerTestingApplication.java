@@ -21,8 +21,9 @@ public class JaegerTestingApplication {
     }
 
     // Инъекция значения из конфигурационного файла, если параметр не найден, будет "default-service-name"
-    @Value("${jaeger.service-name:default-service-name}")
+    @Value("${opentracing.jaeger.service-name:default-service-name}")
     private String serviceName;
+
     @Bean(name = "customJaegerTracer")
     public Tracer jaegerTracer() {
         return new io.jaegertracing.Configuration(serviceName)

@@ -1,16 +1,11 @@
 package org.example.jaeger_testing.rest;
 
-import io.opentracing.Span;
-import io.opentracing.Tracer;
 import lombok.extern.slf4j.Slf4j;
 import org.example.jaeger_testing.dto.OperationRequestDTO;
 import org.example.jaeger_testing.service.CalculatorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -24,12 +19,10 @@ public class CalculatorController {
     }
 
     @PostMapping("/sum")
-    public ResponseEntity<Double> sum(@RequestBody OperationRequestDTO request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Double> sum(@RequestBody OperationRequestDTO request) {
         double result = calculatorService.sum(request.getA(), request.getB());
         return ResponseEntity.ok(result);
     }
-
-
 
     @PostMapping("/subtract")
     public ResponseEntity<Double> subtract(@RequestBody OperationRequestDTO request) {

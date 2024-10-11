@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Slf4j
 @Aspect
 @Component("customTracingAspect")
@@ -49,19 +50,19 @@ public class TracingAspect {
         String methodName = pjp.getSignature().getName();
         log.debug("methodName: {}", methodName);
 
-        // Извлечение HttpServletRequest
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+//        // Извлечение HttpServletRequest
+//        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         SpanContext spanContext = null; // Инициализация SpanContext
 
-        if (requestAttributes instanceof ServletRequestAttributes) {
-            HttpServletRequest request = (HttpServletRequest) ((ServletRequestAttributes) requestAttributes).getRequest();
-
-            // Извлечение SpanContext из заголовков HTTP запроса
-            spanContext = httpTracingExtractor.extract(request);
-        } else {
-            log.warn("Cannot retrieve HttpServletRequest");
-            return pjp.proceed();  // Продолжаем выполнение метода, если HttpServletRequest недоступен
-        }
+//        if (requestAttributes instanceof ServletRequestAttributes) {
+//            HttpServletRequest request = (HttpServletRequest) ((ServletRequestAttributes) requestAttributes).getRequest();
+//
+//            // Извлечение SpanContext из заголовков HTTP запроса
+//            spanContext = httpTracingExtractor.extract(request);
+//        } else {
+//            log.warn("Cannot retrieve HttpServletRequest");
+//            return pjp.proceed();  // Продолжаем выполнение метода, если HttpServletRequest недоступен
+//        }
 
         // Создаем новый спан, используя извлеченный контекст (если он есть)
         Span span;

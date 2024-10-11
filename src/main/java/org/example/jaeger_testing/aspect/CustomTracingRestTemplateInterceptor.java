@@ -17,17 +17,18 @@ import java.util.Map;
 /**
  * TracingRestTemplateInterceptor не предоставляет возможности для изменения имени заголовков "из коробки"
  */
-        @Slf4j
-        public class CustomTracingRestTemplateInterceptor implements ClientHttpRequestInterceptor {
+@Slf4j
+public class CustomTracingRestTemplateInterceptor implements ClientHttpRequestInterceptor {
 
-            private final Tracer tracer;
-            public CustomTracingRestTemplateInterceptor(Tracer tracer) {
-                this.tracer = tracer;
-            }
+    private final Tracer tracer;
 
-            @Override
-            public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-                Span activeSpan = tracer.activeSpan();
+    public CustomTracingRestTemplateInterceptor(Tracer tracer) {
+        this.tracer = tracer;
+    }
+
+    @Override
+    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+        Span activeSpan = tracer.activeSpan();
         if (activeSpan != null) {
             tracer.inject(activeSpan.context(), Format.Builtin.HTTP_HEADERS, new TextMap() {
                 @Override
@@ -38,7 +39,8 @@ import java.util.Map;
                     request.getHeaders().add(key, value);
                     log.info("Injected header: {} -> {}", key, value); // Логируем инжектированные заголовки
                 }
-@Override
+
+                @Override
                 public Iterator<Map.Entry<String, String>> iterator() {
                     throw new UnsupportedOperationException("iterator should never be used with TextMapInjectAdapter");
                 }

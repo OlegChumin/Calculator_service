@@ -8,3 +8,4 @@ opentracing:
     log-spans: true
 
 feature-flag.ccc-jaeger.tracing.enabled: true
+
