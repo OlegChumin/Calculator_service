@@ -41,7 +41,7 @@ public class JaegerHttpTracingExtractorNew {
             // Логируем все заголовки
             log.info("Received header: {} -> {}", headerName, headerValue);
 
-            // Изменяем имя заголовка на кастомный, если это не uber-trace-id
+            // Изменяем имя заголовка на кастомный, если это uber-trace-id
             if ("uber-trace-id".equals(headerName)) {
                 headers.put("jaeger_traceId", headerValue);
                 log.info("Renamed header uber-trace-id -> jaeger_traceId");
