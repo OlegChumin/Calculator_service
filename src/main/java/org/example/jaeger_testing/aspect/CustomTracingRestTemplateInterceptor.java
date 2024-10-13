@@ -28,8 +28,8 @@ public class CustomTracingRestTemplateInterceptor implements ClientHttpRequestIn
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-        log.debug("Starting HTTP request: {} {}", request.getMethod(), request.getURI());
-        log.debug("Request Headers before sending: {}", request.getHeaders());
+        log.info("Starting HTTP request: {} {}", request.getMethod(), request.getURI());
+        log.info("Request Headers before sending: {}", request.getHeaders());
 
         Span activeSpan = tracer.activeSpan();
         if (activeSpan != null) {
@@ -48,18 +48,18 @@ public class CustomTracingRestTemplateInterceptor implements ClientHttpRequestIn
                     throw new UnsupportedOperationException("iterator should never be used with TextMapInjectAdapter");
                 }
             });
-            log.debug("Active span found, injecting trace context");
+            log.info("Active span found, injecting trace context");
         } else {
             // Логируем предупреждение, если активного спана нет
             log.warn("No active span found. Cannot inject trace context.");
         }
 
-        log.debug("Request Headers after injection: {}", request.getHeaders()); // Логируем заголовки после инжекции
+        log.info("Request Headers after injection: {}", request.getHeaders()); // Логируем заголовки после инжекции
 
-        ClientHttpResponse response = execution.execute(request, body);
-        log.debug("Completed HTTP request: {} {}", request.getMethod(), request.getURI());
+//        ClientHttpResponse response = execution.execute(request, body);
+//        log.debug("Completed HTTP request: {} {}", request.getMethod(), request.getURI());
 
         // Выполняем запрос
-        return response;
+        return execution.execute(request, body);
     }
 }
