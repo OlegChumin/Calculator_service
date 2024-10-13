@@ -23,14 +23,12 @@ repositories {
     mavenCentral()
 }
 
-ext {
-    set('springCloudVersion', "2023.0.3")
-}
-
 dependencies {
+    //REST API
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-web-services'
-    implementation 'org.springframework.cloud:spring-cloud-starter'
+
+    //SOAP
+    //implementation 'org.springframework.boot:spring-boot-starter-web-services'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -39,32 +37,8 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     //Jaeger
-    //стартер для интеграции Jaeger и OpenTracing? упрощает настройку Jaeger как бэкенда для трассировки в Spring Cloud приложений
-    implementation 'io.opentracing.contrib:opentracing-spring-jaeger-cloud-starter:3.3.1'
-    //стартер для интеграции Jaeger с OpenTracing для Spring Boot.
-    //содержит основные зависимости и настройки для интеграции Jaeger в контексте OpenTracing без Spring Cloud
     implementation 'io.opentracing.contrib:opentracing-spring-jaeger-starter:3.3.1'
-    //Spring Cloud Sleuth — это библиотека для трассировки и ведения распределенных логов в Spring Cloud приложениях.
-    // Она добавляет поддержку Sleuth для трассировки запросов через различные сервисы, интегрируясь с OpenTracing и Jaeger
-    //implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.11'
-    // https://mvnrepository.com/artifact/io.micrometer/micrometer-tracing
-    implementation 'io.micrometer:micrometer-tracing:1.3.4'
-    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
 
-    //Основной API для OpenTracing, предоставляющий интерфейсы для создания и управления спанами (traces).
-    // Это низкоуровневая библиотека, которую используют все другие зависимости для работы с OpenTracing
-    implementation 'io.opentracing:opentracing-api:0.33.0'
-
-    implementation 'javax.servlet:javax.servlet-api:4.0.1'
-
-
-
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
 }
 
 tasks.named('test') {
