@@ -1,13 +1,11 @@
 package org.example.jaeger_testing.rest;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.example.jaeger_testing.dto.OperationRequestDTO;
 import org.example.jaeger_testing.service.CalculatorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Enumeration;
 
 
 @Slf4j

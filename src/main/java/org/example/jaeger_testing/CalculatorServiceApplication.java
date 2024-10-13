@@ -15,10 +15,10 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @SpringBootApplication
 @EnableAspectJAutoProxy
-public class JaegerTestingApplication {
+public class CalculatorServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(JaegerTestingApplication.class, args);
+        SpringApplication.run(CalculatorServiceApplication.class, args);
     }
 
     // Инъекция значения из конфигурационного файла, если параметр не найден, будет "default-service-name"
