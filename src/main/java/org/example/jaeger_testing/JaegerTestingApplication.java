@@ -2,8 +2,8 @@ package org.example.jaeger_testing;
 
 import io.opentracing.Tracer;
 import lombok.extern.slf4j.Slf4j;
-import org.example.jaeger_testing.aspect.CustomTracingRestTemplateInterceptor;
-import org.example.jaeger_testing.aspect.HttpTracingExtractorNew;
+import org.example.jaeger_testing.aspect.JaegerHTTPTracingRestTemplateInterceptor;
+import org.example.jaeger_testing.aspect.JaegerHttpTracingExtractorNew;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -40,13 +40,13 @@ public class JaegerTestingApplication {
     @Bean(name = "tracingRestTemplate")
     public RestTemplate restTemplate(@Qualifier("customJaegerTracer") Tracer tracer) {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getInterceptors().add(new CustomTracingRestTemplateInterceptor(tracer));
+        restTemplate.getInterceptors().add(new JaegerHTTPTracingRestTemplateInterceptor(tracer));
         return restTemplate;
     }
 
     @Bean(name = "httpTracingExtractor")
-    public HttpTracingExtractorNew httpTracingExtractorNew(@Qualifier("customJaegerTracer") Tracer tracer) {
-        return new HttpTracingExtractorNew(tracer);
+    public JaegerHttpTracingExtractorNew httpTracingExtractorNew(@Qualifier("customJaegerTracer") Tracer tracer) {
+        return new JaegerHttpTracingExtractorNew(tracer);
     }
 
 }

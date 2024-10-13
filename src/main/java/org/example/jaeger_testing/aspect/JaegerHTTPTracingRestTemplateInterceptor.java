@@ -18,11 +18,11 @@ import java.util.Map;
  * TracingRestTemplateInterceptor не предоставляет возможности для изменения имени заголовков "из коробки"
  */
 @Slf4j
-public class CustomTracingRestTemplateInterceptor implements ClientHttpRequestInterceptor {
+public class JaegerHTTPTracingRestTemplateInterceptor implements ClientHttpRequestInterceptor {
 
     private final Tracer tracer;
 
-    public CustomTracingRestTemplateInterceptor(Tracer tracer) {
+    public JaegerHTTPTracingRestTemplateInterceptor(Tracer tracer) {
         this.tracer = tracer;
     }
 
