@@ -24,7 +24,7 @@ public class CalculatorController {
     @PostMapping("/sum")
     public ResponseEntity<Double> sum(@RequestBody OperationRequestDTO request, HttpServletRequest httpRequest) {
         // Логируем заголовки перед выполнением операции
-        logRequestHeaders(httpRequest);
+        logRelevantRequestHeaders(httpRequest);
 
         double result = calculatorService.sum(request.getA(), request.getB());
         return ResponseEntity.ok(result);
@@ -33,7 +33,7 @@ public class CalculatorController {
     @PostMapping("/subtract")
     public ResponseEntity<Double> subtract(@RequestBody OperationRequestDTO request, HttpServletRequest httpRequest) {
         // Логируем заголовки перед выполнением операции
-        logRequestHeaders(httpRequest);
+        logRelevantRequestHeaders(httpRequest);
 
         return ResponseEntity.ok(calculatorService.subtract(request.getA(), request.getB()));
     }
@@ -41,7 +41,7 @@ public class CalculatorController {
     @PostMapping("/multiply")
     public ResponseEntity<Double> multiply(@RequestBody OperationRequestDTO request, HttpServletRequest httpRequest) {
         // Логируем заголовки перед выполнением операции
-        logRequestHeaders(httpRequest);
+        logRelevantRequestHeaders(httpRequest);
 
         return ResponseEntity.ok(calculatorService.multiply(request.getA(), request.getB()));
     }
@@ -49,18 +49,17 @@ public class CalculatorController {
     @PostMapping("/divide")
     public ResponseEntity<Double> divide(@RequestBody OperationRequestDTO request, HttpServletRequest httpRequest) {
         // Логируем заголовки перед выполнением операции
-        logRequestHeaders(httpRequest);
+        logRelevantRequestHeaders(httpRequest);
 
         return ResponseEntity.ok(calculatorService.divide(request.getA(), request.getB()));
     }
 
     // Метод для логирования заголовков запроса
-    private void logRequestHeaders(HttpServletRequest request) {
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            String headerValue = request.getHeader(headerName);
-            log.info("Header: {} = {}", headerName, headerValue);
-        }
+    private void logRelevantRequestHeaders(HttpServletRequest request) {
+        log.info("Header: jaeger_traceId = {}",
+                request.getHeader("jaeger_traceId") != null ? request.getHeader("jaeger_traceId") : "jaeger_traceId not found");
+        log.info("Header: uber-trace-id = {}",
+                request.getHeader("uber-trace-id") != null ? request.getHeader("uber-trace-id") : "uber-trace-id not found");
     }
+
 }
