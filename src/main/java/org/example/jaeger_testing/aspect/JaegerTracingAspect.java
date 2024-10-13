@@ -33,7 +33,8 @@ public class JaegerTracingAspect {
     private final JaegerHttpTracingExtractorNew httpTracingExtractor;
 
     @Autowired
-    public JaegerTracingAspect(@Qualifier("customJaegerTracer") Tracer tracer, @Qualifier("httpTracingExtractor") JaegerHttpTracingExtractorNew httpTracingExtractor) {
+    public JaegerTracingAspect(@Qualifier("customJaegerTracer") Tracer tracer,
+                               @Qualifier("httpTracingExtractor") JaegerHttpTracingExtractorNew httpTracingExtractor) {
         this.tracer = tracer;
         this.httpTracingExtractor = httpTracingExtractor;
     }
@@ -41,6 +42,7 @@ public class JaegerTracingAspect {
     @Around("@within(org.springframework.web.bind.annotation.RestController)")
     public Object traceMethod(ProceedingJoinPoint pjp) throws Throwable {
         log.debug("TracingEnabled {}", tracingEnabled);
+
         if (!tracingEnabled) {
             return pjp.proceed();
         }
